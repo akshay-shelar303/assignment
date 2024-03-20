@@ -57,7 +57,7 @@ class UpdateNotify(APIView):
         try:
             notification = Notification.objects.get(id=pk)
         except Exception as e:
-            return Response({"msg": f"record not found {e}"})
+            return Response({"msg": f"Record with id={pk} does not exist"})
 
         serializer = NotificationSerializer(notification)
 
@@ -67,7 +67,7 @@ class UpdateNotify(APIView):
         try:
             notification = Notification.objects.get(id=pk)
         except:
-            return Response({"msg": "record not found"})
+            return Response({"msg": f"Record with id={pk} does not exist"})
 
         serializer = NotificationSerializer(notification, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -81,9 +81,9 @@ class UpdateNotify(APIView):
         try:
             notification = Notification.objects.get(id=pk)
         except:
-            return Response({"msg": "record not found"})
+            return Response({"msg": f"Record with id={pk} does not exist"})
 
         notification.delete()
-        return Response({"msg": "deleted", "status": status.HTTP_200_OK})
+        return Response({"msg": "Record deleted successfully", "status": status.HTTP_200_OK})
 
 
