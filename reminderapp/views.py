@@ -4,16 +4,86 @@ from .models import Notification
 from .serializers import NotificationSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 @api_view(["GET", "POST"])
 def notifyView(request):
-    serializer = NotificationSerializer(data=request.data)
+    notifications = Notification.objects.all()
+    serializer = NotificationSerializer(notifications, many=True)
     if request.method == "POST":
-        serializer = NotificationSerializer(data=request.POST)
+        serializer = NotificationSerializer(data=request.data)
 
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
         
+
+
+class Notify(APIView):
+
+    def get(self, request):
+        notifications = Notification.objects.all()
+        serializer = NotificationSerializer(notifications, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def post(self, request):
+        serializer = NotificationSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def put(self, request, id):
+        notification = Notification.objects.get(id=self.id)
+        serializer = NotificationSerializer(notification, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UpdateNotify(APIView):
+    def get(self, request, pk):
+        try:
+            notification = Notification.objects.get(id=pk)
+        except Exception as e:
+            return Response({"msg": f"record not found {e}"})
+
+        serializer = NotificationSerializer(notification)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        try:
+            notification = Notification.objects.get(id=pk)
+        except:
+            return Response({"msg": "record not found"})
+
+        serializer = NotificationSerializer(notification, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, pk):
+        try:
+            notification = Notification.objects.get(id=pk)
+        except:
+            return Response({"msg": "record not found"})
+
+        notification.delete()
+        return Response({"msg": "deleted", "status": status.HTTP_200_OK})
+
+
