@@ -6,7 +6,5 @@ class Notification(models.Model):
     time = models.TimeField()
     message = models.TextField()
 
-
     def __str__(self):
         return self.message
-    

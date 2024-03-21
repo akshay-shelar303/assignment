@@ -3,8 +3,7 @@ from .models import Notification
 
 
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ['date', 'time', 'message']
-
+    list_display = ["date", "time", "message"]
 
 
 admin.site.register(Notification, NotificationAdmin)

@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+
 @api_view(["GET", "POST"])
 def notifyView(request):
     notifications = Notification.objects.all()
@@ -22,7 +23,6 @@ def notifyView(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
-        
 
 
 class Notify(APIView):
@@ -35,25 +35,24 @@ class Notify(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     def post(self, request):
         serializer = NotificationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-            
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, id):
         notification = Notification.objects.get(id=self.id)
-        serializer = NotificationSerializer(notification, data=request.data, partial=True)
+        serializer = NotificationSerializer(
+            notification, data=request.data, partial=True
+        )
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-            
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateNotify(APIView):
@@ -73,13 +72,14 @@ class UpdateNotify(APIView):
         except:
             return Response({"msg": f"Record with id={pk} does not exist"})
 
-        serializer = NotificationSerializer(notification, data=request.data, partial=True)
+        serializer = NotificationSerializer(
+            notification, data=request.data, partial=True
+        )
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-            
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         try:
@@ -88,6 +88,6 @@ class UpdateNotify(APIView):
             return Response({"msg": f"Record with id={pk} does not exist"})
 
         notification.delete()
-        return Response({"msg": "Record deleted successfully", "status": status.HTTP_200_OK})
-
-
+        return Response(
+            {"msg": "Record deleted successfully", "status": status.HTTP_200_OK}
+        )
