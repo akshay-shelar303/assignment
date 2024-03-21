@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import notifyView, Notify, UpdateNotify
 
+from .views import Notify, UpdateNotify, notifyView
 
 urlpatterns = [
     path("reminder/", notifyView, name="reminder"),
