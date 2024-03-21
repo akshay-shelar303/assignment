@@ -5,6 +5,8 @@ from .serializers import NotificationSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(["GET", "POST"])
 def notifyView(request):
@@ -24,6 +26,8 @@ def notifyView(request):
 
 
 class Notify(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         notifications = Notification.objects.all()
