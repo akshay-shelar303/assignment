@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "reminderapp",
     "rest_framework.authtoken",
+    "AccountsApp"
 ]
 
 MIDDLEWARE = [

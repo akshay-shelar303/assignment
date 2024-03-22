@@ -17,5 +17,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+from AccountsApp.views import UserDetails
 
-urlpatterns = [path("admin/", admin.site.urls), path("", include("reminderapp.urls"))]
+router = DefaultRouter()
+router.register('accounts', UserDetails, basename='accounts')
+
+
+urlpatterns = [
+    path("admin/", admin.site.urls), 
+    path("", include("reminderapp.urls")),
+    path('api/', include(router.urls))
+    ]
