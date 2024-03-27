@@ -10,6 +10,7 @@ class CustomerSerializer(ModelSerializer):
 
 
 class PolicySerializer(ModelSerializer):
+    customer = CustomerSerializer(read_only=True, many=True)
     class Meta:
         model = Policy
         fields = "__all__"
