@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Customer, Policy
 from .serializers import CustomerSerializer, PolicySerializer, ViewPolicySerializer
 from rest_framework.response import Response
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
 
 
 class CutomerModelViewset(ModelViewSet):
@@ -29,5 +29,8 @@ class UserCreateView(ListCreateAPIView):
     serializer_class = CustomerSerializer
 
 
+class UserDeleteView(RetrieveDestroyAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
 
 
