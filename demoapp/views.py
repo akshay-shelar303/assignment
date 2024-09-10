@@ -1,6 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import Customer, Policy
 from .serializers import CustomerSerializer, PolicySerializer, ViewPolicySerializer
+from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView
 
 
 class CutomerModelViewset(ModelViewSet):
@@ -19,6 +21,13 @@ class PolicyModelViewset(ModelViewSet):
         
         except (KeyError, AttributeError):
             return super().get_serializer_class()
+
+
+
+class UserCreateView(ListCreateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+
 
 
 
